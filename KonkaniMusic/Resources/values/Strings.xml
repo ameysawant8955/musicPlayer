@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Hello">Hello World, Click Me!</string>
+    <string name="ApplicationName">KonkaniMusic</string>
+  <string name="main">KonkaniMusic</string><string name="name">Name</string><string name="more_info">more_infomore_infomore_infomore_info</string>
+</resources>
