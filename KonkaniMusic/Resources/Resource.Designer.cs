@@ -2280,11 +2280,11 @@ namespace KonkaniMusic
 			// aapt resource value: 0x7f020078
 			public const int notification_icon_background = 2130837624;
 			
-			// aapt resource value: 0x7f020084
-			public const int notification_template_icon_bg = 2130837636;
-			
 			// aapt resource value: 0x7f020085
-			public const int notification_template_icon_low_bg = 2130837637;
+			public const int notification_template_icon_bg = 2130837637;
+			
+			// aapt resource value: 0x7f020086
+			public const int notification_template_icon_low_bg = 2130837638;
 			
 			// aapt resource value: 0x7f020079
 			public const int notification_tile_bg = 2130837625;
@@ -2314,10 +2314,13 @@ namespace KonkaniMusic
 			public const int side_nav_bar = 2130837633;
 			
 			// aapt resource value: 0x7f020082
-			public const int textcolor = 2130837634;
+			public const int splash_screen = 2130837634;
 			
 			// aapt resource value: 0x7f020083
-			public const int thumb = 2130837635;
+			public const int textcolor = 2130837635;
+			
+			// aapt resource value: 0x7f020084
+			public const int thumb = 2130837636;
 			
 			static Drawable()
 			{
@@ -3842,6 +3845,9 @@ namespace KonkaniMusic
 			
 			// aapt resource value: 0x7f090003
 			public const int CardView_Light = 2131296259;
+			
+			// aapt resource value: 0x7f090180
+			public const int MyTheme_Splash = 2131296640;
 			
 			// aapt resource value: 0x7f090022
 			public const int Platform_AppCompat = 2131296290;

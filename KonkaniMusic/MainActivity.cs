@@ -13,7 +13,7 @@ using Com.Bumptech.Glide;
 
 namespace KonkaniMusic
 {
-    [Activity(Label = "Konkani Music", MainLauncher = true, Icon = "@drawable/music",
+    [Activity(Label = "Konkani Music", Icon = "@drawable/music",
         Theme = "@style/AppTheme")]
     public class MainActivity : AppCompatActivity
     {
@@ -40,7 +40,7 @@ namespace KonkaniMusic
 
             var maintext = FindViewById<TextView>(Resource.Id.mainFeatured);
 
-            maintext.Text = "Featured songs: ";
+            maintext.Text = " Featured songs: ";
             mPhotoAlbum = new PhotoAlbum();
             mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerViewFeatured);
             mLayoutManager = new LinearLayoutManager(this, 0, false);
@@ -51,7 +51,7 @@ namespace KonkaniMusic
 
             maintext = FindViewById<TextView>(Resource.Id.mainNew);
 
-            maintext.Text = "New songs: ";
+            maintext.Text = " New songs: ";
             mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerViewNew);
             mLayoutManager = new LinearLayoutManager(this, 0, false);
             mRecyclerView.SetLayoutManager(mLayoutManager);
@@ -61,7 +61,7 @@ namespace KonkaniMusic
 
             maintext = FindViewById<TextView>(Resource.Id.mainDownloaded);
 
-            maintext.Text = "Downloaded songs: ";
+            maintext.Text = " Downloaded songs: ";
             mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerViewDownloaded);
             mLayoutManager = new LinearLayoutManager(this, 0, false);
             mRecyclerView.SetLayoutManager(mLayoutManager);
@@ -166,12 +166,12 @@ namespace KonkaniMusic
             layout.PanelExpanded += (s, e) => { System.Diagnostics.Debug.WriteLine("PanelExpanded");
                 playbtn.Visibility = Android.Views.ViewStates.Invisible;
                 queuebtn.Visibility = Android.Views.ViewStates.Invisible;
-                txtArtistName.Visibility = Android.Views.ViewStates.Invisible;
+                //txtArtistName.Visibility = Android.Views.ViewStates.Invisible;
             };
             layout.PanelCollapsed += (s, e) => { System.Diagnostics.Debug.WriteLine("PanelCollapsed");
                 playbtn.Visibility = Android.Views.ViewStates.Visible;
                 queuebtn.Visibility = Android.Views.ViewStates.Visible;
-                txtArtistName.Visibility = Android.Views.ViewStates.Visible;
+                //txtArtistName.Visibility = Android.Views.ViewStates.Visible;
             };
             layout.PanelAnchored += (s, e) => System.Diagnostics.Debug.WriteLine("PanelAnchored");
             layout.PanelSlide += (s, e) =>
