@@ -5,7 +5,7 @@
   </item>
   <item>
     <bitmap
-        android:src="@mipmap/music"
+        android:src="@drawable/mvss"
         android:tileMode="disabled"
         android:gravity="center"/>
   </item>

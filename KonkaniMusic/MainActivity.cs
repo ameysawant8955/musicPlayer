@@ -133,13 +133,24 @@ namespace KonkaniMusic
                     playbt.SetImageResource(Resource.Mipmap.playy);
                 }
                 Toast.MakeText(ApplicationContext, "bt_play clicked", ToastLength.Short).Show();
-            };
-
+            };            
             mp.Error += (sender, args) =>
             {
-                p.Hide();
-                Console.WriteLine("Error in playback resetting: " + args.What);
+                p.Hide();                
                 StopMusic();
+                mp.Reset();
+                Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
+                alert.SetTitle("Network problem!");
+                alert.SetMessage("Try again..");
+                alert.SetPositiveButton("Retry", (senderAlert, e) => {
+                    PlayMusic(mp3, true);
+                });
+
+                alert.SetNegativeButton("Cancel", (senderAlert, e) => {
+                });
+
+                Dialog dialog = alert.Create();
+                dialog.Show();
             };
 
             seekbar.ProgressChanged += Seekbar_ProgressChanged;
@@ -211,7 +222,7 @@ namespace KonkaniMusic
             .Load(recycler.mPhotoAlbum[e].imageUrl)
             .Placeholder(Resource.Mipmap.music)
             .Into(albumArt);
-            PlayMusic(mp3);
+            PlayMusic(mp3,true);
             playing = true;
             playbtn.SetImageResource(Resource.Mipmap.pause);
             playbt.SetImageResource(Resource.Mipmap.pause);
@@ -288,11 +299,12 @@ namespace KonkaniMusic
                     length = mp.CurrentPosition;
                 }
         }        
-        private async void PlayMusic(string rmp3)
+        private async void PlayMusic(string rmp3,bool newsong=false)
         {
             if (rmp3 == "")
                 rmp3 = "http://cdn5.jatt.link/f7861b11c29524fa7c8035af8d4a3847/ssqgv/Ankhon%20Mein%20Teri-(Mr-Jatt.com).mp3";
-            if (length != 0)
+
+            if (length != 0 && newsong==false)
             {
                 mp.SeekTo(length);
                 mp.Start();
@@ -300,8 +312,7 @@ namespace KonkaniMusic
             }
             else
             {
-                mp.Reset();
-               
+                mp.Reset();               
                 p.Show();
                 await mp.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(rmp3));                
                 mp.PrepareAsync();
