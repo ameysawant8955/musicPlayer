@@ -72,8 +72,7 @@ namespace KonkaniMusic
         // Raise an event when the item-click takes place:
         void OnClick(int position)
         {
-            if (ItemClick != null)
-                ItemClick(this, position);
+            ItemClick?.Invoke(this, position);
         }
     }
 }

@@ -175,12 +175,13 @@ namespace KonkaniMusic
             var actionBarHidden = bundle != null &&
                                   bundle.GetBoolean(SavedStateActionBarHidden, false);
             if (actionBarHidden)
-                SupportActionBar.Hide();                        
+                SupportActionBar.Hide();
         }
 
         private void OnItemClick(object sender, int e)
         {
-            
+            var recycler = sender as PhotoAlbumAdapter;
+            Toast.MakeText(this, recycler.mPhotoAlbum[e].mCaption, ToastLength.Short).Show();
         }
 
         //seekbar events
