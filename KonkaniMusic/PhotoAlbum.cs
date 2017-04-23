@@ -10,6 +10,12 @@ namespace KonkaniMusic
         // Caption text for this photo:
         public string mCaption;
 
+        public string mArtist;
+
+        public string songUrl;
+
+        public string imageUrl;
+
         // Return the ID of the photo:
         public int PhotoID
         {
@@ -28,18 +34,18 @@ namespace KonkaniMusic
         // a photo database:
 
         static Photo[] mBuiltInPhotos = {
-            new Photo { mPhotoID = Resource.Drawable.playy,
-                        mCaption = "Buckingham Palace" },
-            new Photo { mPhotoID = Resource.Drawable.previous,
-                        mCaption = "The Eiffel Tower" },
-            new Photo { mPhotoID = Resource.Drawable.queue,
-                        mCaption = "The Louvre" },
-            new Photo { mPhotoID = Resource.Drawable.playy,
-                        mCaption = "Before mobile phones" },
-            new Photo { mPhotoID = Resource.Drawable.previous,
-                        mCaption = "Big Ben skyline" },
-            new Photo { mPhotoID = Resource.Drawable.queue,
-                        mCaption = "Big Ben from below" }
+            new Photo { mPhotoID = Resource.Drawable.m1,imageUrl="https://static.blugaa.com/thumbs/100_100/jbvai.jpg",
+                        mCaption = "Tu Hai Unplugged ",mArtist="AR Rahman",songUrl="http://dl.jatt.link/lq.jatt.link/cdn8/ddfdd14f0dbcc3a2d2b2d76af63334c2/ietzv/Tu%20Hai%20Unplugged-(Mr-Jatt.com).mp3" },
+            new Photo { mPhotoID = Resource.Drawable.m2,imageUrl="https://static.blugaa.com/thumbs/100_100/jevai.jpg",
+                        mCaption = "Tu Hi Hai",mArtist="Amit Trivedi , Ali Zafar",songUrl="http://dl.jatt.link/lq.jatt.link/cdn8/7d62adb19ee142aef0131c55d100114e/qwizv/Tu%20Hi%20Hai-(Mr-Jatt.com).mp3" },
+            new Photo { mPhotoID = Resource.Drawable.m3,imageUrl="https://static.blugaa.com/thumbs/100_100/rkmai.jpg",
+                        mCaption = "Tamma Tamma Again (Badrinath Ki Dulhania)",mArtist="Anuradha Paudwal , Bappi Lahiri , Badshah",songUrl="http://dl.jatt.link/lq.jatt.link/cdn8/2946545fc1b44592e6c45249e8d2e037/jfizv/Tamma%20Tamma%20Again-(Mr-Jatt.com).mp3" },
+            new Photo { mPhotoID = Resource.Drawable.m4,imageUrl="https://static.blugaa.com/thumbs/100_100/icmai.jpg",
+                        mCaption = "Mann Bawraa",mArtist="Varun Sinha",songUrl="http://dl.jatt.link/lq.jatt.link/cdn8/14a2fb18e59f81b1ef05fcbc1470d773/grpzv/Mann%20Bawraa-(Mr-Jatt.com).mp3" },
+            new Photo { mPhotoID = Resource.Drawable.barish,imageUrl="https://static.blugaa.com/thumbs/100_100/wgiai.jpg",
+                        mCaption = "Enna Sona (Remix)",mArtist="Dj Rishabh",songUrl="http://dl.jatt.link/lq.jatt.link/cdn8/b2be6b2a175775a2d94e3f60137126ab/xwlzv/Enna%20Sona%20%20Remix%20-(Mr-Jatt.com).mp3" },
+            new Photo { mPhotoID = Resource.Drawable.m2,imageUrl="http://songsmp3.co/assets/images/1/96011-Screenshot_3.jpg",
+                        mCaption = "Ik Vaari Aa (Raabta)",mArtist="Ik Vaari Aa (Raabta)",songUrl="http://themp3songs.com/48/283524/Ik%20Vaari%20Aa%20(Raabta)%20(TheMp3Songs.Com).mp3" }
             };
 
         // Array of photos that make up the album:

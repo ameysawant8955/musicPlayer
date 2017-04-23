@@ -2,6 +2,7 @@
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using Com.Bumptech.Glide;
 
 namespace KonkaniMusic
 {
@@ -30,11 +31,17 @@ namespace KonkaniMusic
 
         // Underlying data set (a photo album):
         public PhotoAlbum mPhotoAlbum;
+        private MainActivity mainActivity;
 
         // Load the adapter with the data set (photo album) at construction time:
         public PhotoAlbumAdapter(PhotoAlbum photoAlbum)
         {
             mPhotoAlbum = photoAlbum;
+        }
+
+        public PhotoAlbumAdapter(PhotoAlbum photoAlbum, MainActivity mainActivity) : this(photoAlbum)
+        {
+            this.mainActivity = mainActivity;
         }
 
         // Create a new photo CardView (invoked by the layout manager): 
@@ -60,6 +67,12 @@ namespace KonkaniMusic
             // Set the ImageView and TextView in this ViewHolder's CardView 
             // from this position in the photo album:
             vh.Image.SetImageResource(mPhotoAlbum[position].PhotoID);
+
+            Glide.With(mainActivity)
+           .Load(mPhotoAlbum[position].imageUrl)
+           .Placeholder(Resource.Drawable.mPlaceholder)
+           .Into(vh.Image);
+
             vh.Caption.Text = mPhotoAlbum[position].Caption;
         }
 

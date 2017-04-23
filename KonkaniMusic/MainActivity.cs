@@ -9,28 +9,34 @@ using Android.Media;
 using static Android.Media.MediaPlayer;
 using System;
 using Android.Support.V7.Widget;
+using Com.Bumptech.Glide;
 
 namespace KonkaniMusic
 {
-    [Activity(Label = "KonkaniMusic", MainLauncher = true, Icon = "@drawable/music",
+    [Activity(Label = "Konkani Music", MainLauncher = true, Icon = "@drawable/music",
         Theme = "@style/AppTheme")]
     public class MainActivity : AppCompatActivity
     {
         public SeekBar seekbar;
         MediaPlayer mp;
+        string mp3;
         bool playing = false;
+        ProgressDialog p;        
         private const string SavedStateActionBarHidden = "saved_state_action_bar_hidden";
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView (Resource.Layout.Main);
             var layout = FindViewById<SlidingUpPanelLayout>(Resource.Id.sliding_layout);
-            var playbt = FindViewById<ImageButton>(Resource.Id.bt_play);
-            var playbtn = FindViewById<ImageButton>(Resource.Id.play);
-            var queuebtn = FindViewById(Resource.Id.queue);
-            var txtSongName = FindViewById<TextView>(Resource.Id.SongNameText);
-            var txtArtistName = FindViewById<TextView>(Resource.Id.ArtistNameText);
-
+            playbt = FindViewById<ImageButton>(Resource.Id.bt_play);
+            playbtn = FindViewById<ImageButton>(Resource.Id.play);
+            queuebtn = FindViewById<ImageView>(Resource.Id.queue);
+            albumArt= FindViewById<ImageView>(Resource.Id.album_art);
+            txtSongName = FindViewById<TextView>(Resource.Id.SongNameText);
+            txtArtistName = FindViewById<TextView>(Resource.Id.ArtistNameText);
+            p = new ProgressDialog(this);
+            p.SetMessage("Loading song....");
+            p.SetCancelable(false);
 
             var maintext = FindViewById<TextView>(Resource.Id.mainFeatured);
 
@@ -39,7 +45,7 @@ namespace KonkaniMusic
             mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerViewFeatured);
             mLayoutManager = new LinearLayoutManager(this, 0, false);
             mRecyclerView.SetLayoutManager(mLayoutManager);
-            mAdapter = new PhotoAlbumAdapter(mPhotoAlbum);
+            mAdapter = new PhotoAlbumAdapter(mPhotoAlbum,this);
             mAdapter.ItemClick += OnItemClick;
             mRecyclerView.SetAdapter(mAdapter);
 
@@ -49,7 +55,7 @@ namespace KonkaniMusic
             mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerViewNew);
             mLayoutManager = new LinearLayoutManager(this, 0, false);
             mRecyclerView.SetLayoutManager(mLayoutManager);
-            mAdapter = new PhotoAlbumAdapter(mPhotoAlbum);
+            mAdapter = new PhotoAlbumAdapter(mPhotoAlbum,this);
             mAdapter.ItemClick += OnItemClick;
             mRecyclerView.SetAdapter(mAdapter);
 
@@ -59,7 +65,7 @@ namespace KonkaniMusic
             mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerViewDownloaded);
             mLayoutManager = new LinearLayoutManager(this, 0, false);
             mRecyclerView.SetLayoutManager(mLayoutManager);
-            mAdapter = new PhotoAlbumAdapter(mPhotoAlbum);
+            mAdapter = new PhotoAlbumAdapter(mPhotoAlbum,this);
             mAdapter.ItemClick += OnItemClick;
             mRecyclerView.SetAdapter(mAdapter);
 
@@ -74,19 +80,21 @@ namespace KonkaniMusic
             mp.Prepared += (sender, args) =>
             {
                 System.Diagnostics.Debug.WriteLine("called prepare function :)" + mp.Duration);
+                p.Hide();
                 seekbar.Max = mp.Duration;
                 //seekbar_top.Max = mp.Duration;
                 mp.Start();
                 System.Diagnostics.Debug.WriteLine("called prepare function here only:)" + mp.Duration);
                 updateProgressBar();
             };
-            mp.Completion += (sender, args) => StopMusic();
-
+            mp.Completion += (sender, args) => StopMusic();            
             playbtn.Click += (s, e) => {
                 System.Diagnostics.Debug.WriteLine("play clicked");
+                System.Diagnostics.Debug.WriteLine(mp3);
+
                 if (!playing)
                 {
-                    PlayMusic();
+                    PlayMusic(mp3);
                     playing = true;
                     playbtn.SetImageResource(Resource.Mipmap.pause);
                     playbt.SetImageResource(Resource.Mipmap.pause);
@@ -112,7 +120,7 @@ namespace KonkaniMusic
                 System.Diagnostics.Debug.WriteLine("bt_play clicked");
                 if (!playing)
                 {
-                    PlayMusic();
+                    PlayMusic(mp3);
                     playing = true;
                     playbtn.SetImageResource(Resource.Mipmap.pause);
                     playbt.SetImageResource(Resource.Mipmap.pause);
@@ -129,6 +137,7 @@ namespace KonkaniMusic
 
             mp.Error += (sender, args) =>
             {
+                p.Hide();
                 Console.WriteLine("Error in playback resetting: " + args.What);
                 StopMusic();
             };
@@ -137,8 +146,17 @@ namespace KonkaniMusic
             seekbar.StartTrackingTouch += Seekbar_StartTrackingTouch;
             seekbar.StopTrackingTouch += Seekbar_StopTrackingTouch;
 
-            txtSongName.Text = "Ranjishe hi sahi";
-            txtArtistName.Text = "Papon";
+            txtSongName.Text = mPhotoAlbum[0].mCaption.ToString();
+            txtArtistName.Text = mPhotoAlbum[0].mArtist.ToString();
+            mp3 = mPhotoAlbum[0].songUrl;
+            Glide.With(this)
+            .Load(mPhotoAlbum[0].imageUrl)
+            .Placeholder(Resource.Mipmap.queue)
+            .Into(queuebtn);
+            Glide.With(this)
+            .Load(mPhotoAlbum[0].imageUrl)
+            .Placeholder(Resource.Mipmap.music)
+            .Into(albumArt);
 
             layout.Click += (s, e) =>
               {
@@ -182,6 +200,21 @@ namespace KonkaniMusic
         {
             var recycler = sender as PhotoAlbumAdapter;
             Toast.MakeText(this, recycler.mPhotoAlbum[e].mCaption, ToastLength.Short).Show();
+            txtSongName.Text = recycler.mPhotoAlbum[e].mCaption.ToString();
+            txtArtistName.Text =recycler.mPhotoAlbum[e].mArtist.ToString();
+            mp3 = recycler.mPhotoAlbum[e].songUrl;
+            Glide.With(this)
+            .Load(recycler.mPhotoAlbum[e].imageUrl)
+            .Placeholder(Resource.Mipmap.queue)
+            .Into(queuebtn);
+            Glide.With(this)
+            .Load(recycler.mPhotoAlbum[e].imageUrl)
+            .Placeholder(Resource.Mipmap.music)
+            .Into(albumArt);
+            PlayMusic(mp3);
+            playing = true;
+            playbtn.SetImageResource(Resource.Mipmap.pause);
+            playbt.SetImageResource(Resource.Mipmap.pause);
         }
 
         //seekbar events
@@ -230,6 +263,12 @@ namespace KonkaniMusic
         private RecyclerView mRecyclerView;
         private RecyclerView.LayoutManager mLayoutManager;
         private PhotoAlbumAdapter mAdapter;
+        private TextView txtSongName;
+        private TextView txtArtistName;
+        private ImageView queuebtn;
+        private ImageButton playbt;
+        private ImageButton playbtn;
+        private ImageView albumArt;
 
         //music stop play pause methods
 
@@ -248,10 +287,11 @@ namespace KonkaniMusic
                     mp.Pause();
                     length = mp.CurrentPosition;
                 }
-        }
-
-        private async void PlayMusic(string mp3 = "http://cdn5.jatt.link/f7861b11c29524fa7c8035af8d4a3847/ssqgv/Ankhon%20Mein%20Teri-(Mr-Jatt.com).mp3")
+        }        
+        private async void PlayMusic(string rmp3)
         {
+            if (rmp3 == "")
+                rmp3 = "http://cdn5.jatt.link/f7861b11c29524fa7c8035af8d4a3847/ssqgv/Ankhon%20Mein%20Teri-(Mr-Jatt.com).mp3";
             if (length != 0)
             {
                 mp.SeekTo(length);
@@ -261,8 +301,11 @@ namespace KonkaniMusic
             else
             {
                 mp.Reset();
-                await mp.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(mp3));
+               
+                p.Show();
+                await mp.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(rmp3));                
                 mp.PrepareAsync();
+                             
             }
         }
 
